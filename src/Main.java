@@ -1,16 +1,17 @@
-import model.*;
+import factory.SalaFactory;
+import factory.TipoSala;
+import model.Sala;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        Usuario usuario =
-                new Usuario("Breno", TipoUsuario.ESTUDANTE);
+        Sala sala1 = SalaFactory.criarSala(TipoSala.INDIVIDUAL, "Sala 101");
+        Sala sala2 = SalaFactory.criarSala(TipoSala.GRUPO, "Sala 202");
+        Sala sala3 = SalaFactory.criarSala(TipoSala.LABORATORIO, "Lab 01");
 
-        Sala sala =
-                new SalaGrupo("Sala 101");
-
-        System.out.println(usuario.getNome());
-        System.out.println(sala.getNome());
+        System.out.println(sala1.getNome());
+        System.out.println(sala2.getNome());
+        System.out.println(sala3.getNome());
     }
 }
