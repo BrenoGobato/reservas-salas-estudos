@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 
 public class Reserva {
 
+    private static int contador = 1;
+
+    private int id;
     private Usuario usuario;
     private Sala sala;
     private LocalDateTime inicio;
@@ -13,10 +16,15 @@ public class Reserva {
                    LocalDateTime inicio,
                    LocalDateTime fim) {
 
+        this.id = contador++;
         this.usuario = usuario;
         this.sala = sala;
         this.inicio = inicio;
         this.fim = fim;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Usuario getUsuario() {
@@ -33,5 +41,10 @@ public class Reserva {
 
     public LocalDateTime getFim() {
         return fim;
+    }
+
+    public void alterarHorario(LocalDateTime novoInicio, LocalDateTime novoFim) {
+        this.inicio = novoInicio;
+        this.fim = novoFim;
     }
 }
