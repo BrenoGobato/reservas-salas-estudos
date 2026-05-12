@@ -1,8 +1,7 @@
 import factory.SalaFactory;
 import factory.TipoSala;
 import model.*;
-import repository.ReservaRepository;
-import strategy.PoliticaDeReserva;
+import service.ReservaService;
 import strategy.PoliticaPrimeiroAReservar;
 
 import java.time.LocalDateTime;
@@ -11,35 +10,35 @@ public class Main {
 
     public static void main(String[] args) {
 
-        ReservaRepository repository = ReservaRepository.getInstance();
-
-        Sala sala = SalaFactory.criarSala(TipoSala.GRUPO, "Sala 202");
+        ReservaService reservaService =
+                new ReservaService(new PoliticaPrimeiroAReservar());
 
         Usuario aluno = new Usuario("Breno", TipoUsuario.ESTUDANTE);
 
-        Reserva reserva1 = new Reserva(
+        Sala sala = SalaFactory.criarSala(TipoSala.GRUPO, "Sala 202");
+
+        Reserva reserva = reservaService.criarReserva(
                 aluno,
                 sala,
                 LocalDateTime.of(2026, 5, 20, 10, 0),
                 LocalDateTime.of(2026, 5, 20, 11, 0)
         );
 
-        Reserva reserva2 = new Reserva(
+        reservaService.criarReserva(
                 aluno,
                 sala,
                 LocalDateTime.of(2026, 5, 20, 10, 30),
                 LocalDateTime.of(2026, 5, 20, 11, 30)
         );
 
-        PoliticaDeReserva politica = new PoliticaPrimeiroAReservar();
+        if (reserva != null) {
+            reservaService.modificarReserva(
+                    reserva.getId(),
+                    LocalDateTime.of(2026, 5, 20, 12, 0),
+                    LocalDateTime.of(2026, 5, 20, 13, 0)
+            );
 
-        repository.adicionarReserva(reserva1);
-
-        if (politica.podeReservar(reserva2, repository.listarReservas())) {
-            repository.adicionarReserva(reserva2);
-            System.out.println("Reserva criada com sucesso.");
-        } else {
-            System.out.println("Reserva negada: conflito de horário.");
+            reservaService.cancelarReserva(reserva.getId());
         }
     }
 }
