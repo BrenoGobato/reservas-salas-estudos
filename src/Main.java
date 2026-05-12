@@ -1,6 +1,8 @@
 import factory.SalaFactory;
 import factory.TipoSala;
 import model.*;
+import observer.ServicoRelatorioNotificacao;
+import observer.UsuarioNotificacao;
 import service.ReservaService;
 import strategy.PoliticaPrimeiroAReservar;
 
@@ -13,8 +15,10 @@ public class Main {
         ReservaService reservaService =
                 new ReservaService(new PoliticaPrimeiroAReservar());
 
-        Usuario aluno = new Usuario("Breno", TipoUsuario.ESTUDANTE);
+        reservaService.adicionarObservador(new UsuarioNotificacao("Breno"));
+        reservaService.adicionarObservador(new ServicoRelatorioNotificacao());
 
+        Usuario aluno = new Usuario("Breno", TipoUsuario.ESTUDANTE);
         Sala sala = SalaFactory.criarSala(TipoSala.GRUPO, "Sala 202");
 
         Reserva reserva = reservaService.criarReserva(
@@ -22,13 +26,6 @@ public class Main {
                 sala,
                 LocalDateTime.of(2026, 5, 20, 10, 0),
                 LocalDateTime.of(2026, 5, 20, 11, 0)
-        );
-
-        reservaService.criarReserva(
-                aluno,
-                sala,
-                LocalDateTime.of(2026, 5, 20, 10, 30),
-                LocalDateTime.of(2026, 5, 20, 11, 30)
         );
 
         if (reserva != null) {
