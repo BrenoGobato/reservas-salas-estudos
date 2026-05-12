@@ -45,4 +45,17 @@ public class ReservaRepository {
     public List<Reserva> listarReservas() {
         return reservas;
     }
+
+    public Reserva buscarReservaPorId(int id) {
+        for (Reserva reserva : reservas) {
+            if (reserva.getId() == id) {
+                return reserva;
+            }
+        }
+        return null;
+    }
+
+    public void removerReserva(Reserva reserva) {
+        reservas.remove(reserva);
+    }
 }
