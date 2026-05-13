@@ -1,11 +1,11 @@
 import factory.SalaFactory;
 import factory.TipoSala;
 import model.*;
-import observer.ServicoRelatorioNotificacao;
-import observer.UsuarioNotificacao;
+import service.RelatorioService;
 import service.ReservaService;
 import strategy.PoliticaPrimeiroAReservar;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Main {
@@ -15,27 +15,30 @@ public class Main {
         ReservaService reservaService =
                 new ReservaService(new PoliticaPrimeiroAReservar());
 
-        reservaService.adicionarObservador(new UsuarioNotificacao("Breno"));
-        reservaService.adicionarObservador(new ServicoRelatorioNotificacao());
+        RelatorioService relatorioService = new RelatorioService();
 
         Usuario aluno = new Usuario("Breno", TipoUsuario.ESTUDANTE);
-        Sala sala = SalaFactory.criarSala(TipoSala.GRUPO, "Sala 202");
+        Usuario professor = new Usuario("Carlos", TipoUsuario.PROFESSOR);
 
-        Reserva reserva = reservaService.criarReserva(
+        Sala salaGrupo = SalaFactory.criarSala(TipoSala.GRUPO, "Sala 202");
+        Sala laboratorio = SalaFactory.criarSala(TipoSala.LABORATORIO, "Lab 01");
+
+        reservaService.criarReserva(
                 aluno,
-                sala,
+                salaGrupo,
                 LocalDateTime.of(2026, 5, 20, 10, 0),
                 LocalDateTime.of(2026, 5, 20, 11, 0)
         );
 
-        if (reserva != null) {
-            reservaService.modificarReserva(
-                    reserva.getId(),
-                    LocalDateTime.of(2026, 5, 20, 12, 0),
-                    LocalDateTime.of(2026, 5, 20, 13, 0)
-            );
+        reservaService.criarReserva(
+                professor,
+                laboratorio,
+                LocalDateTime.of(2026, 5, 20, 14, 0),
+                LocalDateTime.of(2026, 5, 20, 16, 0)
+        );
 
-            reservaService.cancelarReserva(reserva.getId());
-        }
+        relatorioService.gerarRelatorioDiario(
+                LocalDate.of(2026, 5, 20)
+        );
     }
 }
