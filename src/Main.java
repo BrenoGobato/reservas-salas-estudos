@@ -1,12 +1,11 @@
 import factory.SalaFactory;
 import factory.TipoSala;
 import model.*;
-import service.RelatorioService;
 import service.ReservaService;
 import strategy.PoliticaPrimeiroAReservar;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Main {
 
@@ -15,30 +14,32 @@ public class Main {
         ReservaService reservaService =
                 new ReservaService(new PoliticaPrimeiroAReservar());
 
-        RelatorioService relatorioService = new RelatorioService();
+        Sala sala101 = SalaFactory.criarSala(TipoSala.INDIVIDUAL, "Sala 101");
+        Sala sala202 = SalaFactory.criarSala(TipoSala.GRUPO, "Sala 202");
+        Sala lab01 = SalaFactory.criarSala(TipoSala.LABORATORIO, "Lab 01");
+
+        reservaService.adicionarSala(sala101);
+        reservaService.adicionarSala(sala202);
+        reservaService.adicionarSala(lab01);
 
         Usuario aluno = new Usuario("Breno", TipoUsuario.ESTUDANTE);
-        Usuario professor = new Usuario("Carlos", TipoUsuario.PROFESSOR);
-
-        Sala salaGrupo = SalaFactory.criarSala(TipoSala.GRUPO, "Sala 202");
-        Sala laboratorio = SalaFactory.criarSala(TipoSala.LABORATORIO, "Lab 01");
 
         reservaService.criarReserva(
                 aluno,
-                salaGrupo,
+                sala202,
                 LocalDateTime.of(2026, 5, 20, 10, 0),
                 LocalDateTime.of(2026, 5, 20, 11, 0)
         );
 
-        reservaService.criarReserva(
-                professor,
-                laboratorio,
-                LocalDateTime.of(2026, 5, 20, 14, 0),
-                LocalDateTime.of(2026, 5, 20, 16, 0)
+        List<Sala> disponiveis = reservaService.listarSalasDisponiveis(
+                LocalDateTime.of(2026, 5, 20, 10, 30),
+                LocalDateTime.of(2026, 5, 20, 11, 30)
         );
 
-        relatorioService.gerarRelatorioDiario(
-                LocalDate.of(2026, 5, 20)
-        );
+        System.out.println("Salas disponíveis:");
+
+        for (Sala sala : disponiveis) {
+            System.out.println("- " + sala.getNome());
+        }
     }
 }
