@@ -10,7 +10,7 @@ public class Reserva {
     private Usuario usuario;
     private Sala sala;
     private LocalDateTime inicio;
-    private LocalDateTime fim;
+    private LocalDateTime fim; 
 
     public Reserva(Usuario usuario, Sala sala,
                    LocalDateTime inicio,

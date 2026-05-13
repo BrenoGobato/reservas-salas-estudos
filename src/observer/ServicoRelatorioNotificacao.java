@@ -9,4 +9,4 @@ public class ServicoRelatorioNotificacao implements ObservadorReserva {
         System.out.println("Serviço de relatório recebeu atualização: "
                 + mensagem + " | Sala: " + reserva.getSala().getNome());
     }
-}
+} 

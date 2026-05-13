@@ -22,4 +22,4 @@ public class ReservaSubject {
             observador.atualizar(mensagem, reserva);
         }
     }
-}
+} 

@@ -14,4 +14,4 @@ public class SalaFactory {
             case LABORATORIO -> new Laboratorio(nome);
         };
     }
-}
+} 

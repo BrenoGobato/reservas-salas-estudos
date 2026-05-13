@@ -15,4 +15,4 @@ public class UsuarioNotificacao implements ObservadorReserva {
         System.out.println("Notificação para " + nome + ": " + mensagem
                 + " | Reserva ID: " + reserva.getId());
     }
-}
+} 

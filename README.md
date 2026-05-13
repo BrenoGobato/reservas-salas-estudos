@@ -40,5 +40,3 @@ src/
 docs/
 
 ## Autores
-Breno Gobato
-Vitor Souza

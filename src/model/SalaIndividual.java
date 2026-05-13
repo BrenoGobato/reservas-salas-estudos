@@ -6,3 +6,4 @@ public class SalaIndividual extends Sala {
         super(nome, 1);
     }
 }
+  

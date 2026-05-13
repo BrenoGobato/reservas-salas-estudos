@@ -12,7 +12,7 @@ public abstract class Sala {
 
     public String getNome() {
         return nome;
-    }
+    } 
 
     public int getCapacidade() {
         return capacidade;

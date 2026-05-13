@@ -4,4 +4,4 @@ public enum TipoSala {
     INDIVIDUAL,
     GRUPO,
     LABORATORIO
-}
+} 
