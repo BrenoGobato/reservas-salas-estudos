@@ -3,6 +3,7 @@ package service;
 import model.Reserva;
 import model.Sala;
 import model.Usuario;
+import model.TipoUsuario;
 import observer.ObservadorReserva;
 import observer.ReservaSubject;
 import repository.ReservaRepository;
@@ -90,5 +91,28 @@ public class ReservaService {
         System.out.println("Reserva cancelada com sucesso.");
 
         reservaSubject.notificarObservadores("Reserva cancelada", reserva);
+    }
+
+    public List<Sala> listarSalasDisponiveis(LocalDateTime inicio, LocalDateTime fim) {
+        List<Sala> salasDisponiveis = new ArrayList<>();
+
+        for (Sala sala : repository.listarSalas()) {
+            Reserva reservaTeste = new Reserva(
+                    new Usuario("Sistema", TipoUsuario.ESTUDANTE),
+                    sala,
+                    inicio,
+                    fim
+            );
+
+            if (politicaDeReserva.podeReservar(reservaTeste, repository.listarReservas())) {
+                salasDisponiveis.add(sala);
+            }
+        }
+
+        return salasDisponiveis;
+    }
+
+    public void adicionarSala(Sala sala) {
+        repository.adicionarSala(sala);
     }
 }
