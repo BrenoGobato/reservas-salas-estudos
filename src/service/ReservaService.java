@@ -3,20 +3,29 @@ package service;
 import model.Reserva;
 import model.Sala;
 import model.Usuario;
+import observer.ObservadorReserva;
+import observer.ReservaSubject;
 import repository.ReservaRepository;
 import strategy.PoliticaDeReserva;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReservaService {
 
     private ReservaRepository repository;
     private PoliticaDeReserva politicaDeReserva;
+    private ReservaSubject reservaSubject;
 
     public ReservaService(PoliticaDeReserva politicaDeReserva) {
         this.repository = ReservaRepository.getInstance();
         this.politicaDeReserva = politicaDeReserva;
+        this.reservaSubject = new ReservaSubject();
+    }
+
+    public void adicionarObservador(ObservadorReserva observador) {
+        reservaSubject.adicionarObservador(observador);
     }
 
     public void alterarPolitica(PoliticaDeReserva novaPolitica) {
@@ -48,7 +57,7 @@ public class ReservaService {
             return;
         }
 
-        List<Reserva> reservasTemporarias = repository.listarReservas();
+        List<Reserva> reservasTemporarias = new ArrayList<>(repository.listarReservas());
         reservasTemporarias.remove(reserva);
 
         Reserva reservaAtualizada = new Reserva(
@@ -65,6 +74,8 @@ public class ReservaService {
 
         reserva.alterarHorario(novoInicio, novoFim);
         System.out.println("Reserva alterada com sucesso.");
+
+        reservaSubject.notificarObservadores("Reserva alterada", reserva);
     }
 
     public void cancelarReserva(int id) {
@@ -77,5 +88,7 @@ public class ReservaService {
 
         repository.removerReserva(reserva);
         System.out.println("Reserva cancelada com sucesso.");
+
+        reservaSubject.notificarObservadores("Reserva cancelada", reserva);
     }
 }
