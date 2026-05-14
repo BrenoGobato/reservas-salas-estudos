@@ -58,4 +58,14 @@ public class ReservaRepository {
     public void removerReserva(Reserva reserva) {
         reservas.remove(reserva);
     }
+
+    public List<Reserva> listarReservasPorUsuario(Usuario usuario) {
+        List<Reserva> reservasUsuario = new ArrayList<>();
+        for (Reserva reserva : reservas) {
+            if (reserva.getUsuario().equals(usuario)) {
+                reservasUsuario.add(reserva);
+            }
+        }
+        return reservasUsuario;
+    }
 } 

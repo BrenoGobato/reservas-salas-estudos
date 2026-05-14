@@ -1,6 +1,7 @@
 package service;
 
 import model.Reserva;
+import model.Usuario;
 import repository.ReservaRepository;
 
 import java.time.LocalDate;
@@ -38,6 +39,26 @@ public class RelatorioService {
 
         if (!encontrouReserva) {
             System.out.println("Nenhuma reserva encontrada para esta data.");
+        }
+    }
+
+    public void gerarHistoricoPorUsuario(Usuario usuario) {
+        List<Reserva> reservas = repository.listarReservasPorUsuario(usuario);
+
+        System.out.println("Histórico de reservas para o usuário: " + usuario.getNome());
+        System.out.println("--------------------------------------");
+
+        if (reservas.isEmpty()) {
+            System.out.println("Nenhuma reserva encontrada.");
+            return;
+        }
+
+        for (Reserva reserva : reservas) {
+            System.out.println("ID: " + reserva.getId());
+            System.out.println("Sala: " + reserva.getSala().getNome());
+            System.out.println("Início: " + reserva.getInicio());
+            System.out.println("Fim: " + reserva.getFim());
+            System.out.println("--------------------------------------");
         }
     }
 } 
