@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Usuario {
 
     private String nome;
@@ -16,5 +18,18 @@ public class Usuario {
 
     public TipoUsuario getTipo() {
         return tipo;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Usuario usuario = (Usuario) obj;
+        return Objects.equals(nome, usuario.nome) && tipo == usuario.tipo;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, tipo);
     }
 } 

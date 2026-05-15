@@ -8,6 +8,8 @@ import observer.ObservadorReserva;
 import observer.ReservaSubject;
 import repository.ReservaRepository;
 import strategy.PoliticaDeReserva;
+import validation.ValidadorReserva;
+import validation.ValidadorReservaChainFactory;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,11 +20,13 @@ public class ReservaService {
     private ReservaRepository repository;
     private PoliticaDeReserva politicaDeReserva;
     private ReservaSubject reservaSubject;
+    private ValidadorReserva validadorReserva;
 
     public ReservaService(PoliticaDeReserva politicaDeReserva) {
         this.repository = ReservaRepository.getInstance();
         this.politicaDeReserva = politicaDeReserva;
         this.reservaSubject = new ReservaSubject();
+        this.validadorReserva = ValidadorReservaChainFactory.criarCadeiaValidadores();
     }
 
     public void adicionarObservador(ObservadorReserva observador) {
@@ -38,6 +42,10 @@ public class ReservaService {
                                 LocalDateTime fim) {
 
         Reserva novaReserva = new Reserva(usuario, sala, inicio, fim);
+
+        if (!validadorReserva.validar(novaReserva, repository.listarReservas())) {
+            return null;
+        }
 
         if (!politicaDeReserva.podeReservar(novaReserva, repository.listarReservas())) {
             System.out.println("Não foi possível criar reserva: conflito de horário.");
